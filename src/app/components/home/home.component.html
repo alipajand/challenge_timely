@@ -6,23 +6,40 @@
             </h1>
         </div>
         <div class="card-body">
-            <form>
+            <form [formGroup]="calendarForm"
+                  (ngSubmit)="postCalendarInfo()">
                 <div class="form-group">
                     <label for="urlImportField">
                         Calendar Url
                     </label>
                     <div class="input-group mb-3">
-                        <input class="form-control"
+                        <input type="url"
+                               class="form-control"
                                id="urlImportField"
+                               formControlName="url"
                                placeholder="Enter your url here!">
-
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-primary">GET Events</button>
+                            <button type="submit"
+                                    class="btn btn-primary"
+                                    [disabled]="calendarForm.invalid">
+                                Validate url
+                            </button>
                         </div>
                     </div>
+                    <small class="form-text text-muted"
+                           *ngIf="formUrl.value === '' || formUrl.value !== form.sampleUrl else copied"
+                           (click)="fillForm()">
+                        sample url: {{form.sampleUrl}}
+                        <br>
+                        (click to fill)
+                    </small>
+                    <ng-template #copied>
+                        <small class="form-text text-muted">
+                            replaced!
+                        </small>
+                    </ng-template>
                 </div>
             </form>
-
         </div>
     </div>
 </div>

@@ -7,7 +7,9 @@ import {catchError, map, tap} from 'rxjs/operators';
 import {MessageService} from './message.service';
 
 const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
+    headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+    })
 };
 
 @Injectable({providedIn: 'root'})
@@ -16,7 +18,8 @@ export class Services {
     /**
      * URL to web api
      */
-    private baseUrl = 'api/timely';
+    private baseUrl = 'https://timelyapp.dev.time.ly/api';
+    private calendarInfoUrl = 'https://timelyapp.dev.time.ly/api/calendars/info';
 
     constructor(
         private http: HttpClient,
@@ -24,21 +27,20 @@ export class Services {
     }
 
     /**
-     * GET CalendarEvents from the server
+     * POST CalendarEvents from the server
      */
-    getCalendarEvents(): Observable<any> {
-        return this.http.get<any>(this.baseUrl)
-            .pipe(
-                tap(_ => this.log('fetched CalendarEvents')),
-                catchError(this.handleError<any>('getCalendarEvents', []))
-            );
+    postCalendarInfo(event: any): Observable<any> {
+        return this.http.post<any>(this.calendarInfoUrl, event, httpOptions).pipe(
+            tap((newEvent: any) => this.log(`postCalendarInfo id=${newEvent.id}`)),
+            catchError(this.handleError<any>('addEvent'))
+        );
     }
 
     /**
-     * GET event by id. Return `undefined` when id not found
+     * GET CalendarEvents from the server
      */
-    getEventNo404<Data>(id: number): Observable<any> {
-        const url = `${this.baseUrl}/?id=${id}`;
+    getCalendarEvents(id: string, page: number = 1): Observable<any> {
+        const url = `${this.baseUrl}/calendars/${id}/events/?page=${page}`;
         return this.http.get<any>(url)
             .pipe(
                 map(event => event[0]), // returns a {0|1} element array
@@ -48,17 +50,6 @@ export class Services {
                 }),
                 catchError(this.handleError<any>(`getEvent id=${id}`))
             );
-    }
-
-    /**
-     * GET event by id. Will 404 if id not found
-     */
-    getEvent(id: number): Observable<any> {
-        const url = `${this.baseUrl}/${id}`;
-        return this.http.get<any>(url).pipe(
-            tap(_ => this.log(`fetched event id=${id}`)),
-            catchError(this.handleError<any>(`getEvent id=${id}`))
-        );
     }
 
     /**
@@ -72,16 +63,6 @@ export class Services {
         return this.http.get<any>(`${this.baseUrl}/?name=${term}`).pipe(
             tap(_ => this.log(`found CalendarEvents matching "${term}"`)),
             catchError(this.handleError<any>('searchCalendarEvents', []))
-        );
-    }
-
-    /**
-     * POST: add a new event to the server
-     */
-    addEvent(event: any): Observable<any> {
-        return this.http.post<any>(this.baseUrl, event, httpOptions).pipe(
-            tap((newEvent: any) => this.log(`added event w/ id=${newEvent.id}`)),
-            catchError(this.handleError<any>('addEvent'))
         );
     }
 

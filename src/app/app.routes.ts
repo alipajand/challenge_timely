@@ -1,6 +1,6 @@
-import {RouterModule, Routes, CanActivate} from '@angular/router';
-import {HomeComponent} from './components/home/home.component';
-import {ErrorComponent} from './components/error/error.component';
+import {RouterModule, Routes} from '@angular/router';
+import {HomeComponent} from './components/home/';
+import {ErrorComponent} from './components/error/';
 
 export const routes: Routes = [
     // public

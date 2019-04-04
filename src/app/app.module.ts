@@ -1,11 +1,12 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {CommonModule} from '@angular/common';
 
 import {AppRoutes} from './app.routes';
 import {AppComponent} from './app.component';
 
-import {FormsModule} from '@angular/forms';
-import {HttpClientModule, HttpClient} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 /**
  * pages
@@ -23,9 +24,11 @@ import {ErrorComponent} from './components/error/';
         AppRoutes,
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
+        CommonModule,
         HttpClientModule
     ],
-    providers: [HttpClient],
+    providers: [],
     bootstrap: [AppComponent]
 })
 
