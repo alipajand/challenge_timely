@@ -1,13 +1,17 @@
-import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
+import {AppRoutes} from './app.routes';
 import {AppComponent} from './app.component';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {AppRoutes} from './app.routes';
+import {FormsModule} from '@angular/forms';
+import {HttpClientModule, HttpClient} from '@angular/common/http';
 
-import {HomeComponent} from './components/home/home.component';
-import {ErrorComponent} from './components/error/error.component';
+/**
+ * pages
+ */
+import {HomeComponent} from './components/home/';
+import {ErrorComponent} from './components/error/';
 
 @NgModule({
     declarations: [
@@ -16,12 +20,14 @@ import {ErrorComponent} from './components/error/error.component';
         ErrorComponent
     ],
     imports: [
-        NgbModule,
         AppRoutes,
-        BrowserModule
+        BrowserModule,
+        FormsModule,
+        HttpClientModule
     ],
-    providers: [],
+    providers: [HttpClient],
     bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }

@@ -1,0 +1,13 @@
+// add local variables
+@import "./styles/dependencies";
+@import "./theme/variables";
+
+// add bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+// add font icon
+//@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+//@import '~@fortawesome/fontawesome-free/scss/regular';
+
+// app styles
+@import "./styles/global";
