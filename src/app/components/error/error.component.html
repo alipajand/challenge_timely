@@ -1,11 +1,18 @@
-<h1>
-    404
-</h1>
-<h1>
-    Sorry page not found
-</h1>
-<div>
-    <a [routerLink]="'/'">
-        home
-    </a>
+<div class="my-5 errorPage px-md-0 px-4 container">
+    <div class="justify-content-center py-5 row">
+        <div class="col-lg-6 col-12">
+            <h1 class="text-center errorCode text-primary m-0">
+                404
+            </h1>
+            <h1 class="text-center">
+                Sorry the page not available
+            </h1>
+            <hr>
+            <div class="text-center mt-4">
+                <a [routerLink]="'/home'">
+                    Home
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
