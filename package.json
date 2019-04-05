@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve --port=3000 --open",
+        "start": "ng serve --port=3000",
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
@@ -24,6 +24,7 @@
         "@fortawesome/fontawesome-free": "^5.8.1",
         "bootstrap": "^4.3.1",
         "core-js": "^2.5.7",
+        "jquery": "^3.3.1",
         "rxjs": "~6.4.0",
         "zone.js": "~0.8.26"
     },
@@ -32,6 +33,7 @@
         "@angular/cli": "~7.3.7",
         "@angular/compiler-cli": "~7.2.11",
         "@angular/language-service": "~7.2.11",
+        "@types/jquery": "^3.3.29",
         "@types/node": "~11.13.0",
         "codelyzer": "~5.0.0",
         "protractor": "~5.4.0",

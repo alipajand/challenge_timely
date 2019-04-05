@@ -1,4 +1,4 @@
-<div class="container my-3">
+<div class="container my-3 pb-5">
     <div class="card shadow-sm">
         <div class="card-header">
             <h1>
@@ -22,11 +22,11 @@
                             <button type="submit"
                                     class="btn btn-primary"
                                     [disabled]="calendarForm.invalid">
-                                Validate url
+                                Check calendar url
                             </button>
                         </div>
                     </div>
-                    <small class="form-text text-muted"
+                    <small class="form-text text-muted pointer"
                            *ngIf="formUrl.value === '' || formUrl.value !== form.sampleUrl else copied"
                            (click)="fillForm()">
                         sample url: {{form.sampleUrl}}
@@ -42,4 +42,59 @@
             </form>
         </div>
     </div>
+    <app-loading *ngIf="flags.loading"></app-loading>
+    <div *ngIf="calendarEvents && calendarEvents.length !== 0 else noCalendarEvents">
+        <div class="card my-2"
+             *ngFor="let calendar of calendarEvents">
+            <div class="card-body">
+                <div class="text-primary">
+                    {{calendar.title}}
+                    <small class="text-muted mx-2"
+                           *ngIf="calendar.start_datetime">
+                        {{calendar.start_datetime | date:'medium'}}
+                    </small>
+                    <small class="text-muted mx-2"
+                           *ngIf="calendar.end_datetime">
+                        {{calendar.end_datetime | date:'medium'}}
+                    </small>
+                </div>
+                <div *ngIf="calendar.description_short">
+                    <hr>
+                    {{calendar.description_short}}
+                </div>
+            </div>
+        </div>
+        <ul class="pagination">
+            <li class="page-item pointer"
+                (click)="goToPreviousPage()"
+                [ngClass]="{'disabled': params.currentPage === 1}">
+                <span class="page-link">Previous</span>
+            </li>
+            <!--        <li class="page-item pointer"-->
+            <!--            *ngFor="let page of params.total_page">-->
+            <!--            <a class="page-link" href="#">-->
+            <!--                {{page}}-->
+            <!--            </a>-->
+            <!--        </li>-->
+            <li class="page-item pointer"
+                (click)="goToNextPage()"
+                [ngClass]="{'disabled': params.currentPage === params.total_page_count}">
+                <span class="page-link">Next</span>
+            </li>
+            <li class="page-item pointer"
+                (click)="resetData()">
+                <span class="page-link">Reset</span>
+            </li>
+        </ul>
+    </div>
+    <ng-template #noCalendarEvents>
+        <div class="card my-2"
+             *ngIf="!flags.loading">
+            <div class="card-body text-muted">
+                <small>
+                    No events!
+                </small>
+            </div>
+        </div>
+    </ng-template>
 </div>

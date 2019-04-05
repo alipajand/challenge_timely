@@ -4,11 +4,13 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 
+// import * as $ from 'jquery';
+
 import {MessageService} from './message.service';
 
 const httpOptions = {
     headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        'mimeType': 'multipart/form-data'
     })
 };
 
@@ -21,18 +23,17 @@ export class Services {
     private baseUrl = 'https://timelyapp.dev.time.ly/api';
     private calendarInfoUrl = 'https://timelyapp.dev.time.ly/api/calendars/info';
 
-    constructor(
-        private http: HttpClient,
-        private messageService: MessageService) {
+    constructor(private http: HttpClient,
+                private messageService: MessageService) {
     }
 
     /**
      * POST CalendarEvents from the server
      */
-    postCalendarInfo(event: any): Observable<any> {
-        return this.http.post<any>(this.calendarInfoUrl, event, httpOptions).pipe(
-            tap((newEvent: any) => this.log(`postCalendarInfo id=${newEvent.id}`)),
-            catchError(this.handleError<any>('addEvent'))
+    postCalendarInfo(data: FormData) {
+        return this.http.post<any>(this.calendarInfoUrl, data, httpOptions).pipe(
+            tap((calendar: any) => this.log(`post event data=${calendar}`)),
+            catchError(this.handleError<any>('addHero'))
         );
     }
 
@@ -43,50 +44,8 @@ export class Services {
         const url = `${this.baseUrl}/calendars/${id}/events/?page=${page}`;
         return this.http.get<any>(url)
             .pipe(
-                map(event => event[0]), // returns a {0|1} element array
-                tap(h => {
-                    const outcome = h ? `fetched` : `did not find`;
-                    this.log(`${outcome} event id=${id}`);
-                }),
                 catchError(this.handleError<any>(`getEvent id=${id}`))
             );
-    }
-
-    /**
-     * GET CalendarEvents whose name contains search term
-     */
-    searchCalendarEvents(term: string): Observable<any> {
-        if (!term.trim()) {
-            // if not search term, return empty event array.
-            return of([]);
-        }
-        return this.http.get<any>(`${this.baseUrl}/?name=${term}`).pipe(
-            tap(_ => this.log(`found CalendarEvents matching "${term}"`)),
-            catchError(this.handleError<any>('searchCalendarEvents', []))
-        );
-    }
-
-    /**
-     * DELETE: delete the event from the server
-     */
-    deleteEvent(event: any | number): Observable<any> {
-        const id = typeof event === 'number' ? event : event.id;
-        const url = `${this.baseUrl}/${id}`;
-
-        return this.http.delete<any>(url, httpOptions).pipe(
-            tap(_ => this.log(`deleted event id=${id}`)),
-            catchError(this.handleError<any>('deleteEvent'))
-        );
-    }
-
-    /**
-     * PUT: update the event on the server
-     */
-    updateEvent(event: any): Observable<any> {
-        return this.http.put(this.baseUrl, event, httpOptions).pipe(
-            tap(_ => this.log(`updated event id=${event.id}`)),
-            catchError(this.handleError<any>('updateEvent'))
-        );
     }
 
     /**
