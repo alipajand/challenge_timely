@@ -47,20 +47,30 @@
         <div class="card my-2"
              *ngFor="let calendar of calendarEvents">
             <div class="card-body">
-                <div class="text-primary">
-                    {{calendar.title}}
-                    <small class="text-muted mx-2"
-                           *ngIf="calendar.start_datetime">
-                        {{calendar.start_datetime | date:'medium'}}
-                    </small>
-                    <small class="text-muted mx-2"
-                           *ngIf="calendar.end_datetime">
-                        {{calendar.end_datetime | date:'medium'}}
-                    </small>
-                </div>
-                <div *ngIf="calendar.description_short">
-                    <hr>
-                    {{calendar.description_short}}
+                <div class="media">
+                    <div class="media-left"
+                         *ngIf="calendar.images">
+                        <img [src]="generateUrl(calendar)"
+                             class="media-object mr-2"
+                             style="width:60px">
+                    </div>
+                    <div class="media-body">
+                        <div class="text-primary">
+                            {{calendar.title}}
+                            <small class="text-muted mx-2"
+                                   *ngIf="calendar.start_datetime">
+                                {{calendar.start_datetime | date:'medium'}}
+                            </small>
+                            <small class="text-muted mx-2"
+                                   *ngIf="calendar.end_datetime">
+                                {{calendar.end_datetime | date:'medium'}}
+                            </small>
+                        </div>
+                        <div *ngIf="calendar.description_short">
+                            <hr>
+                            {{calendar.description_short}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,6 +96,11 @@
                 <span class="page-link">Reset</span>
             </li>
         </ul>
+        <small class="text-muted">
+            Page: {{params.currentPage}}
+            <span class="mx-2 text-black-50">-</span>
+            {{params.currentPage * params.per_page}} to {{params.currentPage * params.per_page + params.per_page}}
+        </small>
     </div>
     <ng-template #noCalendarEvents>
         <div class="card my-2"

@@ -71,6 +71,10 @@ export class HomeComponent implements OnInit {
         return this.calendarForm.get('url');
     }
 
+    generateUrl(calendar) {
+        return calendar.images ? calendar.images[0].sizes.thumbnail.url : null;
+    }
+
     /**
      *
      */
