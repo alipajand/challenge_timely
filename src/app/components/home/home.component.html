@@ -37,9 +37,7 @@
                     <small class="form-text text-muted pointer"
                            *ngIf="formUrl.value === '' || formUrl.value !== form.sampleUrl else copied"
                            (click)="fillForm()">
-                        sample url: {{form.sampleUrl}}
-                        <br>
-                        (click to fill)
+                        Sample url: {{form.sampleUrl}}
                     </small>
                     <ng-template #copied>
                         <small class="form-text text-muted">
@@ -101,7 +99,7 @@
             </li>
         </ul>
         <small class="text-muted">
-            Page: {{params.currentPage}}
+            Page: {{params.currentPage}}/{{params.total_page_count}}
             <span class="mx-2 text-black-50">-</span>
             {{params.currentPage * params.per_page}} to {{params.currentPage * params.per_page + params.per_page}}
         </small>

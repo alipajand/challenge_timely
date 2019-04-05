@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
     };
 
     form = {
-        sampleUrl: '​https://calendar.dev.time.ly/i98cgmcr'
+        sampleUrl: '​https://calendar.dev.time.ly/i98cgmcr/'
     };
 
     params = {
@@ -131,18 +131,25 @@ export class HomeComponent implements OnInit {
      * send calendar url to get calendar id
      */
     postCalendarInfo(): void {
-        const form = new FormData();
         const {url} = this.formControls;
-        form.append('url', url.value.trim());
-
-        if (!url.value) {
-            return;
-        }
+        const form = `url=${encodeURIComponent(url.value).replace('%E2%80%8B', '')}`;
+        console.log(form);
 
         /**
          * reset data
          */
-        this.resetData();
+        this.calendarInfo = null;
+        this.params.queryData = null;
+
+        this.calendarEvents = [];
+
+        this.params.total_data = 1;
+        this.params.currentPage = 1;
+        this.params.total_page_count = 1;
+
+        this.params.has_next = true;
+        this.flags.showReset = false;
+
 
         /**
          * get calendar's info
@@ -169,8 +176,11 @@ export class HomeComponent implements OnInit {
         }, () => {
             this.flags.loading = false;
 
+            /**
+             * notify
+             */
             this.notifyService.clear();
-            this.notifyService.error('The calendar wasn\'t found', {
+            this.notifyService.error('The calendar wasn\'t found!', {
                 timeout: 3000,
                 pauseOnHover: false
             });
@@ -182,8 +192,11 @@ export class HomeComponent implements OnInit {
      */
     goToNextPage(): void {
         if (this.params.currentPage + 1 > this.params.total_page_count) {
+            /**
+             * notify
+             */
             this.notifyService.clear();
-            this.notifyService.error('You can not go to next page!', {
+            this.notifyService.error('It\'s the end! You can not go to next page.', {
                 timeout: 3000,
                 pauseOnHover: false
             });
@@ -209,8 +222,11 @@ export class HomeComponent implements OnInit {
      */
     goToPreviousPage(): void {
         if (this.params.currentPage - 1 === 0) {
+            /**
+             * notify
+             */
             this.notifyService.clear();
-            this.notifyService.error('You can not go to previous page!', {
+            this.notifyService.error('It\'s the first page! You can not go to previous page.', {
                 timeout: 3000,
                 pauseOnHover: false
             });
@@ -254,6 +270,9 @@ export class HomeComponent implements OnInit {
             this.flags.showReset = true;
 
             if (!res) {
+                /**
+                 * notify
+                 */
                 this.notifyService.clear();
                 this.notifyService.error('An error has occurred, please try again!', {
                     timeout: 3000,
@@ -270,7 +289,7 @@ export class HomeComponent implements OnInit {
             this.params.per_page = response.size;
             this.params.total_data = response.total;
 
-            const total = response.total / response.size;
+            const total = Math.floor(response.total / response.size);
             this.params.total_page_count = total;
             for (let i = 1; i < total; i++) {
                 this.params.total_page.push(i);
@@ -283,6 +302,10 @@ export class HomeComponent implements OnInit {
             );
         }, () => {
             this.flags.loading = false;
+
+            /**
+             * notify
+             */
             this.notifyService.clear();
             this.notifyService.error('An error has occurred on getting Events, please try again!', {
                 timeout: 3000,

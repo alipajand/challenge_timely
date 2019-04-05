@@ -10,7 +10,8 @@ import {MessageService} from './message.service';
 
 const httpOptions = {
     headers: new HttpHeaders({
-        'mimeType': 'multipart/form-data'
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'cache-control': 'no-cache'
     })
 };
 
@@ -30,7 +31,7 @@ export class Services {
     /**
      * POST CalendarEvents from the server
      */
-    postCalendarInfo(data: FormData) {
+    postCalendarInfo(data: any) {
         return this.http.post<any>(this.calendarInfoUrl, data, httpOptions);
     }
 
@@ -49,11 +50,7 @@ export class Services {
      */
     private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
-
-            // TODO: send the error to remote logging infrastructure
             console.error(error); // log to console instead
-
-            // TODO: better job of transforming error for user consumption
             this.log(`${operation} failed: ${error.message}`);
 
             // Let the app keep running by returning an empty result.
