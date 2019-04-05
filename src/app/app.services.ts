@@ -31,21 +31,14 @@ export class Services {
      * POST CalendarEvents from the server
      */
     postCalendarInfo(data: FormData) {
-        return this.http.post<any>(this.calendarInfoUrl, data, httpOptions).pipe(
-            tap((calendar: any) => this.log(`post event data=${calendar}`)),
-            catchError(this.handleError<any>('addHero'))
-        );
+        return this.http.post<any>(this.calendarInfoUrl, data, httpOptions);
     }
 
     /**
      * GET CalendarEvents from the server
      */
     getCalendarEvents(id: string, page: number = 1): Observable<any> {
-        const url = `${this.baseUrl}/calendars/${id}/events/?page=${page}`;
-        return this.http.get<any>(url)
-            .pipe(
-                catchError(this.handleError<any>(`getEvent id=${id}`))
-            );
+        return this.http.get<any>(`${this.baseUrl}/calendars/${id}/events/?page=${page}`);
     }
 
     /**

@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
+import {SnotifyService} from 'ng-snotify';
+
 import {Services} from '../../app.services';
 
-import {ActivatedRoute, Router, NavigationStart} from '@angular/router';
+import {ActivatedRoute, Router, NavigationEnd} from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -35,16 +37,17 @@ export class HomeComponent implements OnInit {
     };
 
     constructor(private services: Services,
-                private formBuilder: FormBuilder,
                 private router: Router,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute,
+                private formBuilder: FormBuilder,
+                private notifyService: SnotifyService) {
 
         this.router.events.subscribe(event => {
             if (!event) {
                 return;
             }
 
-            if (event instanceof NavigationStart) {
+            if (event instanceof NavigationEnd) {
                 this.fillData();
             }
         });
@@ -136,6 +139,14 @@ export class HomeComponent implements OnInit {
             return;
         }
 
+        /**
+         * reset data
+         */
+        this.resetData();
+
+        /**
+         * get calendar's info
+         */
         this.services.postCalendarInfo(form).subscribe(res => {
             if (!res) {
                 return;
@@ -156,8 +167,13 @@ export class HomeComponent implements OnInit {
                 }
             });
         }, () => {
-            console.log('failed postCalendarInfo');
             this.flags.loading = false;
+
+            this.notifyService.clear();
+            this.notifyService.error('The calendar wasn\'t found', {
+                timeout: 3000,
+                pauseOnHover: false
+            });
         });
     }
 
@@ -166,7 +182,11 @@ export class HomeComponent implements OnInit {
      */
     goToNextPage(): void {
         if (this.params.currentPage + 1 > this.params.total_page_count) {
-            console.log('you can not go to next page!');
+            this.notifyService.clear();
+            this.notifyService.error('You can not go to next page!', {
+                timeout: 3000,
+                pauseOnHover: false
+            });
             return;
         }
 
@@ -189,7 +209,11 @@ export class HomeComponent implements OnInit {
      */
     goToPreviousPage(): void {
         if (this.params.currentPage - 1 === 0) {
-            console.log('you can not go to previous page!');
+            this.notifyService.clear();
+            this.notifyService.error('You can not go to previous page!', {
+                timeout: 3000,
+                pauseOnHover: false
+            });
             return;
         }
 
@@ -217,7 +241,7 @@ export class HomeComponent implements OnInit {
         }
 
         if (!id) {
-            id = this.calendarInfo ? this.calendarInfo.id : this.params.queryData ? this.params.queryData.params.id : null;
+            id = this.params.queryData ? this.params.queryData.params.id : null;
         }
 
         if (!id) {
@@ -230,7 +254,11 @@ export class HomeComponent implements OnInit {
             this.flags.showReset = true;
 
             if (!res) {
-                console.log('please try again!');
+                this.notifyService.clear();
+                this.notifyService.error('An error has occurred, please try again!', {
+                    timeout: 3000,
+                    pauseOnHover: false
+                });
                 return;
             }
 
@@ -255,7 +283,11 @@ export class HomeComponent implements OnInit {
             );
         }, () => {
             this.flags.loading = false;
-            console.log('failed getCalendarEvents!');
+            this.notifyService.clear();
+            this.notifyService.error('An error has occurred on getting Events, please try again!', {
+                timeout: 3000,
+                pauseOnHover: false
+            });
         });
     }
 }

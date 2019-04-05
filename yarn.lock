@@ -3397,6 +3397,11 @@ neo-async@^2.5.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.0.tgz#b9d15e4d71c6762908654b5183ed38b753340835"
 
+ng-snotify@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/ng-snotify/-/ng-snotify-4.3.1.tgz#4f338bb241cb5137729585e8ffc56cd43d1cab45"
+  integrity sha512-prtS39n6tH9AZpK0/HVpqrzWRI8yow5FjMwJ1D8LU2HCI0lCqaNhDhfB++8kz7yZ5/5K2LzXbEgU8ViG75lZ6w==
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"

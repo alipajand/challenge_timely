@@ -7,6 +7,7 @@ import {AppComponent} from './app.component';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import {SnotifyModule, SnotifyService, ToastDefaults} from 'ng-snotify';
 
 /**
  * pages
@@ -28,9 +29,13 @@ import {LoadingComponent} from './components/loading/';
         FormsModule,
         ReactiveFormsModule,
         CommonModule,
-        HttpClientModule
+        HttpClientModule,
+        SnotifyModule,
     ],
-    providers: [],
+    providers: [
+        {provide: 'SnotifyToastConfig', useValue: ToastDefaults},
+        SnotifyService
+    ],
     bootstrap: [AppComponent]
 })
 
