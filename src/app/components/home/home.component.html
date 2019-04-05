@@ -1,14 +1,9 @@
 <div class="container my-3 pb-5">
-    <div class="card shadow-sm">
-        <div class="card-header">
-            <h1>
-                TIME.LY
-            </h1>
-        </div>
+    <div class="card border-0 shadow-sm">
         <div class="card-body">
             <form [formGroup]="calendarForm"
                   (ngSubmit)="postCalendarInfo()">
-                <div class="form-group">
+                <div class="form-group m-0">
                     <label for="urlImportField">
                         Calendar Url
                     </label>
@@ -48,9 +43,19 @@
             </form>
         </div>
     </div>
+    <ng-template [ngIf]="calendarInfo">
+        <hr class="mt-5">
+        <h1 class="my-3">
+            {{calendarInfo.title}}
+            <small>
+                {{calendarInfo.contact_name}}
+                ({{calendarInfo.contact_email}})
+            </small>
+        </h1>
+    </ng-template>
     <app-loading *ngIf="flags.loading"></app-loading>
     <div *ngIf="calendarEvents && calendarEvents.length !== 0 else noCalendarEvents">
-        <div class="card my-2"
+        <div class="card border-0 my-2 border-0"
              *ngFor="let calendar of calendarEvents">
             <div class="card-body">
                 <div class="media">
@@ -105,7 +110,7 @@
         </small>
     </div>
     <ng-template #noCalendarEvents>
-        <div class="card my-2"
+        <div class="card border-0 my-2"
              *ngIf="!flags.loading">
             <div class="card-body text-muted">
                 <small>

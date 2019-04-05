@@ -133,7 +133,6 @@ export class HomeComponent implements OnInit {
     postCalendarInfo(): void {
         const {url} = this.formControls;
         const form = `url=${encodeURIComponent(url.value).replace('%E2%80%8B', '')}`;
-        console.log(form);
 
         /**
          * reset data
