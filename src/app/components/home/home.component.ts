@@ -16,7 +16,8 @@ export class HomeComponent implements OnInit {
     calendarForm: any = FormGroup;
 
     flags = {
-        loading: false
+        loading: false,
+        showReset: false
     };
 
     form = {
@@ -80,6 +81,8 @@ export class HomeComponent implements OnInit {
      */
     resetData(): void {
         this.calendarInfo = null;
+        this.params.queryData = null;
+
         this.calendarEvents = [];
 
         this.params.total_data = 1;
@@ -87,18 +90,13 @@ export class HomeComponent implements OnInit {
         this.params.total_page_count = 1;
 
         this.params.has_next = true;
-        this.flags.loading = true;
+        this.flags.showReset = false;
 
         this.calendarForm.patchValue({
             url: ''
         });
 
-        this.router.navigate(['/home'], {
-            queryParams: {
-                page: this.params.currentPage,
-                id: this.params.queryData.params.id
-            }
-        });
+        this.router.navigate(['/home']);
     }
 
     /**
@@ -229,6 +227,7 @@ export class HomeComponent implements OnInit {
         this.flags.loading = true;
         this.services.getCalendarEvents(id, this.params.currentPage).subscribe(res => {
             this.flags.loading = false;
+            this.flags.showReset = true;
 
             if (!res) {
                 console.log('please try again!');

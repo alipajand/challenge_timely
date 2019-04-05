@@ -25,6 +25,14 @@
                                 Check calendar url
                             </button>
                         </div>
+                        <div class="input-group-append"
+                             *ngIf="flags.showReset">
+                            <button type="submit"
+                                    (click)="resetData()"
+                                    class="btn btn-danger">
+                                Reset
+                            </button>
+                        </div>
                     </div>
                     <small class="form-text text-muted pointer"
                            *ngIf="formUrl.value === '' || formUrl.value !== form.sampleUrl else copied"
@@ -90,10 +98,6 @@
                 (click)="goToNextPage()"
                 [ngClass]="{'disabled': params.currentPage === params.total_page_count}">
                 <span class="page-link">Next</span>
-            </li>
-            <li class="page-item pointer"
-                (click)="resetData()">
-                <span class="page-link">Reset</span>
             </li>
         </ul>
         <small class="text-muted">
