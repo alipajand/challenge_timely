@@ -13,12 +13,14 @@ import {HttpClientModule} from '@angular/common/http';
  */
 import {HomeComponent} from './components/home/';
 import {ErrorComponent} from './components/error/';
+import {LoadingComponent} from './components/loading/';
 
 @NgModule({
     declarations: [
         AppComponent,
         HomeComponent,
-        ErrorComponent
+        ErrorComponent,
+        LoadingComponent
     ],
     imports: [
         AppRoutes,
